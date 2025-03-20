@@ -1,13 +1,14 @@
+// Importaciones necesarias para el funcionamiento del servicio de base de datos
 import 'package:postgres/postgres.dart';
 
+/// Clase que proporciona servicios de acceso a la base de datos PostgreSQL
+/// Maneja la conexión y las operaciones con la base de datos
 class DatabaseService {
-  final String host;
-  final int port;
-  final String database;
-  final String username;
-  final String password;
+  // Instancia de la conexión a la base de datos
   late PostgreSQLConnection _connection;
 
+  /// Constructor que recibe los parámetros de conexión a la base de datos
+  /// y establece la conexión
   DatabaseService({
     required this.host,
     required this.port,
@@ -16,6 +17,14 @@ class DatabaseService {
     required this.password,
   });
 
+  final String host;
+  final int port;
+  final String database;
+  final String username;
+  final String password;
+
+  /// Inicializa la conexión a la base de datos
+  /// Debe llamarse antes de realizar cualquier operación
   Future<void> connect() async {
     _connection = PostgreSQLConnection(
       host,
@@ -27,6 +36,10 @@ class DatabaseService {
     await _connection.open();
   }
 
+  /// Ejecuta una consulta SQL en la base de datos
+  /// @param query - Consulta SQL a ejecutar
+  /// @param params - Parámetros de la consulta (opcional)
+  /// Retorna los resultados de la consulta
   Future<List<Map<String, dynamic>>> query(String query,
       [List<dynamic>? params]) async {
     final Map<String, dynamic> substitutionValues = {};
@@ -51,6 +64,8 @@ class DatabaseService {
     }).toList();
   }
 
+  /// Cierra la conexión a la base de datos
+  /// Debe llamarse cuando ya no se necesite la conexión
   Future<void> close() async {
     await _connection.close();
   }

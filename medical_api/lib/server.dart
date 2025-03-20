@@ -1,3 +1,4 @@
+// Importaciones necesarias para el funcionamiento del servidor
 import 'dart:io';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
@@ -9,10 +10,10 @@ import 'routes/doctor_routes.dart';
 import 'routes/appointment_routes.dart';
 
 void main() async {
-  // Load environment variables
+  // Cargar variables de entorno
   var env = DotEnv(includePlatformEnvironment: true)..load();
 
-  // Initialize database service
+  // Inicializar servicio de base de datos
   final dbService = DatabaseService(
     host: env['DB_HOST']!,
     port: int.parse(env['DB_PORT']!),
@@ -21,35 +22,37 @@ void main() async {
     password: env['DB_PASSWORD']!,
   );
 
-  // Connect to database
+  // Conectar a la base de datos
   try {
     await dbService.connect();
-    print('Successfully connected to database');
+    print('Conexión exitosa a la base de datos');
   } catch (e) {
-    print('Failed to connect to database: $e');
+    print('Error al conectar a la base de datos: $e');
     exit(1);
   }
 
-  // Create router
+  // Crear router
   final app = Router();
 
-  // Initialize routes
+  // Inicializar rutas
   app.mount('/api/patients', PatientRoutes(dbService).router);
   app.mount('/api/doctors', DoctorRoutes(dbService).router);
   app.mount('/api/appointments', AppointmentRoutes(dbService).router);
 
-  // Create server
+  // Crear servidor
   final handler = Pipeline()
       .addMiddleware(logRequests())
       .addMiddleware(_corsMiddleware())
       .addHandler(app);
 
-  final port = int.parse(
-      Platform.environment['PORT'] ?? '3000'); // Changed default port to 3000
+  final port = int.parse(Platform.environment['PORT'] ??
+      '3000'); // Cambiar puerto por defecto a 3000
   final server = await serve(handler, InternetAddress.anyIPv4, port);
-  print('Server listening on port ${server.port}');
+  print('Servidor escuchando en el puerto ${server.port}');
 }
 
+/// Middleware para configurar los headers CORS (Cross-Origin Resource Sharing)
+/// Permite el acceso a la API desde diferentes orígenes
 Middleware _corsMiddleware() {
   return createMiddleware(
     requestHandler: (Request request) {
