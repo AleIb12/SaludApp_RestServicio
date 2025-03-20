@@ -1,0 +1,24 @@
+# Environment variables
+.env
+*.env
+
+# Dart specific
+.dart_tool/
+.packages
+build/
+pubspec.lock
+
+# IDE specific
+.idea/
+.vscode/
+*.iml
+*.iws
+.DS_Store
+
+# Logs
+*.log
+
+# Compiled files
+*.dart.js
+*.js.deps
+*.js.map
