@@ -29,7 +29,7 @@ A powerful REST API for managing medical services built with Dart. This API prov
 
 1. Clone the repository
 ```bash
-git clone [your-repository-url]
+git clone [https://github.com/AleIb12/SaludApp_RestServicio.git]
 ```
 
 2. Copy the environment file
@@ -106,4 +106,4 @@ DB_PASSWORD=your_password
 This project is licensed under the MIT License - see the LICENSE file for details
 
 ---
-⌨️ with ❤️ by [Your Name]
+⌨️ with ❤️ by [Ali]
